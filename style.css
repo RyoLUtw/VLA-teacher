@@ -1,0 +1,236 @@
+/*Beta V1.4 teacher's version*/
+/* Style the tab */
+.responsive-img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+}
+
+.titleContainer {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  overflow: hidden;
+}
+
+.tab {
+  border: 1px solid #ccc;
+  border-bottom: 1px solid#202c75;
+  background-color: #f5f5f5;
+  /* Set the height of the container */
+  overflow-scrolling: touch;
+  /* Enable momentum-based scrolling on Android */
+  -webkit-overflow-scrolling: touch;
+  /* Enable smooth scrolling on iOS */
+  max-width: 525px;
+}
+
+.tablinks-container {
+  overflow-x: auto;
+  max-width: 525px;
+}
+
+.tablinks-wrapper {
+  display: flex;
+  width: 850px;
+  /* Set the width to a fixed value */
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+.tab button br {
+  content: "";
+  display: block;
+  margin: 10px 0;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: white;
+  color: #1e2134;
+  font-weight: 500;
+  border-top: 5px solid #202c75;
+  border-left: 1px solid #202c75;
+  border-right: 1px solid #202c75;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  max-width: 500px;
+  padding: 6px 12px;
+  border: 1px solid #202c75;
+  border-top: none;
+}
+
+.hiddenDiv {
+  display: none;
+}
+
+.regularButton {
+  padding: 10px;
+  font-size: medium;
+  margin-top: 10px;
+  margin-left: 5px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #eeeded;
+}
+
+.regularButton:hover {
+  background-color: #ddd;
+}
+
+.dominantButton {
+  padding: 10px;
+  font-size: medium;
+  margin-top: 10px;
+  margin-left: 5px;
+  background-color: #202c75;
+  color: white;
+  border-radius: 8px;
+  border: 1px solid rgb(109, 109, 109);
+}
+
+.dominantButton:hover {
+  background-color: #0084ff;
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
+}
+
+.button-container-right {
+  text-align: right;
+}
+
+.button-container-left {
+  text-align: left;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(1, auto);
+  grid-template-rows: repeat(1, 1fr);
+  grid-gap: 1px;
+  align-items: center;
+  text-align: left;
+}
+
+.grid-item {
+  padding: 5px;
+  text-align: center;
+  font-size: large;
+}
+
+mark {
+  font-weight: bolder !important;
+  background-color: #fcf873;
+}
+
+.highlighted {
+  background-color: yellow;
+}
+
+.highlight {
+  background-color: yellow;
+  cursor: pointer;
+}
+
+.popup {
+  position: absolute;
+  left: 10px;
+  background-color: #f5f5f5;
+  padding: 10px;
+  border: 2px solid #202c75;
+  display: none;
+  z-index: 2;
+}
+
+.hiddenDropdown {
+  font-Size: xx-large;
+  text-Align: center;
+  display: inline-block;
+}
+
+.navigateButton {
+  height: 40px;
+  width: 40px;
+  display: inline-block;
+  background-color: #202c75;
+  color: white;
+  border-radius: 8px;
+  border: 1px solid rgb(109, 109, 109);
+}
+
+.GreyNav {
+  height: 40px;
+  width: 40px;
+  display: inline-block;
+  background-color: #eeeded;
+  color: black;
+  border-radius: 8px;
+  border: 1px solid rgb(109, 109, 109);
+}
+
+table {
+  border-collapse: collapse;
+  table-layout: auto;
+
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: middle;
+}
+
+.cancelButton {
+  padding: 0px;
+  padding-top: 0px;
+  height: 20px;
+  width: 20px;
+  font-size: medium;
+  margin-top: 1px;
+  margin-left: 1px;
+  border-radius: 0px;
+  border: 1px solid #ccc;
+  background-color: red;
+  color: white;
+  white-space: nowrap;
+  float: right
+}
+
+#wordCounter {
+  position: fixed;
+  /* Fixed positioning relative to the viewport */
+  bottom: 50px;
+  /* Distance from the top of the viewport */
+  right: 10px;
+  /* Distance from the left of the viewport */
+  background-color: white;
+  /* Optional: to make it stand out */
+  padding: 10px;
+  /* Optional: for better appearance */
+  z-index: 1000;
+  /* Ensures it stays above other elements */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+  /* Optional: adds shadow for better visibility */
+}

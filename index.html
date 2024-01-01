@@ -1,0 +1,328 @@
+<!--Beta V1.4 Teacher's Version-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Vocabulary Learning Assistant</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="titleContainer" id="headerContainer">
+    <img class="responsive-img" src="Title Teacher's version.jpg">
+  </div>
+
+  <div class="tab" id="tabButtons">
+    <div class="tablinks-container">
+      <div class="tablinks-wrapper">
+        <button id="loadStudySet" class="tablinks" onclick="(
+          function(){
+          listLocalStorage();
+          openTab(event, 'Tab0')
+
+        })()">載入學習集</button>
+        <button id="tabButtonStep1" class="tablinks" onclick="openTab(event, 'Tab1')">步驟1<br>選擇目標單字</button>
+        <button id="tabButtonStep2" class="tablinks" onclick="openTab(event, 'Tab2')">步驟2<br>推測單字意思</button>
+        <button id="tabButtonStep3" class="tablinks" onclick="openTab(event, 'Tab3')">步驟3<br>閱讀練習</button>
+        <button id="tabButtonStep4" class="tablinks" onclick="openTab(event, 'Tab4')">步驟4<br>拼字練習</button>
+        <button id="tabButtonStep5" class="tablinks" onclick="openTab(event, 'Tab6')">步驟5<br>儲存學習集</button>
+        <button id="tabButtonLocalStorage" class="tablinks" onclick="(function(){
+        tableLocalStorageFiles();
+        openTab(event, 'Tab7')
+        })()">管理學習集</button>
+        <!--<button id="tabButtonStep5" class="tablinks" onclick="openTab(event, 'Tab5')">步驟5<br>造句練習</button>-->
+      </div>
+    </div>
+  </div>
+  <!-- Step0 -->
+  <div id="Tab0" class="tabcontent">
+    <h3>從瀏覽器載入學習集</h3>
+    <p>(請點選下拉式選單，並選擇之前保存於瀏覽器儲存空間的學習集)</p>
+    <select id="set-select" style="font-size: x-large;"></select>
+    <button class="regularButton" onclick="loadStudySetFromLocalStorage()">載入選擇的學習集</button>
+    <br>
+    <hr><br>
+    <h3>從裝置載入學習集</h3>
+    <p>(請點選「瀏覽裝置」按鈕，並選擇保存於裝置的學習集)</p>
+    <button class="dominantButton" onclick="loadStudySetFromDevice(event)">瀏覽裝置</button>
+    <br>
+    <hr><br>
+    <h3>復原前次暫存</h3>
+    <p>若想繼續上次中斷之學習，請點選「復原」按鈕</p>
+    <button class="regularButton" onclick="loadPrevResultFromLocalStorage()">復原</button>
+  </div>
+  <!-- Step1 -->
+  <div id="Tab1" class="tabcontent">
+    <h3>請在下方貼上你要練習閱讀的文章</h3>
+    <p>(建議每次貼一個段落即可，避免不會的單字過多，每天不要學習超過15個單字喔! 效果會變很差的!)</p>
+    <textarea style="height: 100px; width: 100%; font-size: 12px;" id="targettext" placeholder="請貼上文章"
+      style="text-align: left; vertical-align: top;">Furthermore, some local tenants11 have even been forced </textarea>
+    <div style="width:100%; display:flex; justify-content: space-between; text-align: left;">
+      <button id="loadTextButton" class="dominantButton" onclick="loadText()">載入文章</button>
+
+
+      <button class="regularButton" onclick="clearText()">清空輸入內容</button>
+      <!--<button class="regularButton" onclick="saveTargetWords()">載入目標單字</button>-->
+    </div>
+    <div id="selectGuide" style="display: none;">
+      <p id="instructionSelectWord">請直接點選下方文章中看不懂的單字以標記為目標單字。<br>標記完畢後請按"確認/更新選取"按鈕。</p>
+      <h3 id="wordCounter">已標記0個單字</h3>
+      <button id="autoMatchButton" title="系統將掃描教育部高中字級表2級以上單字，並自動標記為目標單字。" class="dominantButton"
+        onclick="changeDivDisplay('autoMatchPopup','block')">自動標記單字</button>
+      <div class="popup" id="autoMatchPopup">
+        <div style="font-size: large">
+          <p>請選擇要系統自動標記的單字級別</p>
+          <label><input type="checkbox" name="level2" value="level2"> 級別 2</label><br>
+          <label><input type="checkbox" name="level3" value="level3" checked> 級別 3</label><br>
+          <label><input type="checkbox" name="level4" value="level4" checked> 級別 4</label><br>
+          <label><input type="checkbox" name="level5" value="level5"> 級別 5</label>
+        </div>
+
+        <div>
+          <button class="dominantButton" onclick="matchWords()">開始標記</button>
+          <button class="regularButton" onclick="removeAllHighlights()">清除標記</button>
+          <button class="regularButton" onclick="changeDivDisplay('autoMatchPopup','none')">關閉</button>
+        </div>
+      </div>
+
+    </div>
+    <div id="loadResult">
+    </div>
+    <div>
+      <p id="selectedWords"></p>
+    </div>
+    <div id="modifyTWButtonContainer" class="hiddenDiv">
+      <button onclick="modifyTW()" class="regularButton">修改目標單字</button>
+    </div>
+    <div id="modifyTW" class="hiddenDiv">
+      <hr>
+      <p style="color: red;">警告:修改目標單字將導致「步驟3:閱讀練習」之目標單字提示功能失效，請自行斟酌是否修改。</p>
+      <label>將</label>
+      <select id="modifyTWDropdown" style="font-size: x-large;"></select>
+      <label>修改為:</p>
+        <input id="changeTW" style="font-size: x-large;"></input>
+        <button id="apply-change-btn" class="regularButton">確認修改</button>
+        <hr><br>
+    </div>
+    <div id="tab1toTab2" class="button-container-right" style="display: none;">
+      <button id="tab1ToTab2Button" onclick="tab1ToTab2()" class="regularButton">下一步</button>
+    </div>
+
+  </div>
+
+  <!-- Step2 -->
+  <div id="Tab2" class="tabcontent">
+    <div id="editSenPopup" class="popup">
+      <h3 style="text-align: center;">手動修改例句</h3>
+      <h4>例句</h4>
+      <div id="editSenTextboxContainer"></div>
+      <div id="editDefContainer">
+        <h4>定義</h4>
+        <textarea id="editDefTextArea"></textarea>
+      </div>
+      <div id="editTransContainer">
+        <h4>中文翻譯</h4>
+        <textarea id="editTransTextArea"></textarea>
+      </div>
+      <div id="editSynContainer">
+        <h4>同義詞</h4>
+        <p>同義詞是為了提升學生推測中文翻譯的效果，幫助系統判斷意思相近但用字不同的中文翻譯是否正確。 例如: cause可翻譯成「導致」，但也可翻譯成「使、引發」</p>
+
+        <textarea id="editSynTextArea"></textarea>
+      </div>
+      <div id="editSenButtonContainer">
+        <button id="cancelEdit" onclick="cancelEdit()">取消</button>
+        <button id="saveEdit" onclick="saveEdit()">儲存變更</button>
+      </div>
+    </div>
+    <h3>推測單字意思</h3>
+    <p>透過例句所描繪的情境，推測目標單字的意思</p>
+    <hr><br>
+    <p>請指定每個單字的例句數量，並點選產生例句。</p>
+    <div id="queueDisplayContainer" style="text-align: left;">
+      <p id="queueDisplay"></p>
+    </div>
+    <div class="grid-container">
+      <div class="grid-item" style="grid-column: 1 ; grid-row: 1;">
+        <label for="senNum">每個單字的例句數量:</label>
+        <select id="senNum" name="senNum" style="font-size: large;"></select>
+      </div>
+      <div class="grid-item" style="grid-column: 2 ; grid-row: 1;">
+        <button id="makeSentenceButton" class="dominantButton" onclick="makeSentence()">產生例句</button>
+        <br><button class="regularButton" onclick="abortMakeSentence()">停止產生例句</button>
+        <br><button class="regularButton" onclick="wipeExSenFinal()">清除所有例句</button>
+
+      </div>
+    </div>
+
+    <br><input value="" style="height: 30px; width: 100%; font-size: large;" type="text" id="APIkey"
+      placeholder="請輸入API金鑰">
+
+    <div id="progressContainer">
+      <p id="progress"></p>
+    </div>
+    <div>
+
+    </div>
+    <div id="reMakeSenPopup" class="popup">
+      <button class="cancelButton" onclick="cancelRemakeSen()" style="float:right">X</button>
+      <h3>重新造句選項</h1>
+        <p>請勾選想要重新造句的句子</p>
+        <div id="reMake_exSenCon"></div>
+        <hr>
+        <p>提供範例例句給AI參考</p>
+        <textarea id="userExampleSen" style="width:100%"></textarea>
+        <button class="dominantButton" onclick="reMakeSen()">重新造句</button>
+    </div>
+    <div style="text-align: center;">
+      <button id="reMakeSenButton" class="regularButton hiddenDiv" onclick="showRemakePopup()">本單字重新造句</button>
+      <button id="editSenButton" class="regularButton hiddenDiv" onclick="editSen()">手動修改例句</button>
+      <button id="deleteTWButton" class="regularButton hiddenDiv" onclick="deleteTW()">刪除本單字</button>
+    </div>
+    <div id="titleContainer" style="display: none">
+      <button class="dominantButton" id="prevVocButton" onclick="prevVoc()"
+        style="height: 40px; width: 40px;">&lt</button>
+      <select class="hiddenDropdown" id="wordDropdown" onchange="whenDropChange()"></select>
+      <button class="dominantButton" id="nextVocButton" onclick="nextVoc()"
+        style="height: 40px; width: 40px;">&gt</button>
+    </div>
+    <div id="senContainer" style="display: none"></div>
+    <div id="defContainer" style="display: none">
+      <button class="regularButton" id="defButton" onclick="showDef()">顯示定義</button>
+    </div>
+    <div style="text-align: right;">
+      <p id="defText" style="text-align: left;"></p>
+      <hr>
+    </div>
+    <div id="guessContainer" class="grid-container" style="display:none">
+      <div class="grid-item" style="grid-column:1 ; grid-row:1; align-self: baseline;">
+        <label for=" closeness" style="font-size: large; ">接近程度</label>
+        <br><meter id="closeness" min="1" max="10" low="4" high="8" optimum="10" style="width: 100%"></meter><br>
+      </div>
+      <div class="grid-item" style="grid-column:2 ; grid-row:1; text-align: center; align-self: baseline;">
+        <label for="ZhGuess" style="font-size: large;">你推測的中文翻譯:</label><br>
+        <input type="text" id="ZhGuess" oninput="updateMeter()" style="font-size: large;" />
+      </div>
+      <div class="grid-container" style="grid-column: span 2; grid-row:2">
+        <button class="regularButton" id="translButton" style="width: 30%; padding: 5px;"
+          onclick="showTrans()">顯示中文</button>
+        <p id="translText" style="text-align: left;"></p>
+      </div>
+    </div>
+    <div class="button-container-right">
+      <button class="dominantButton" style="display: none; margin-top: 10px" id="tab2NextButton">下一步</button>
+    </div>
+
+  </div>
+
+
+  <!-- Step3 -->
+  <div id="Tab3" class="tabcontent">
+    <h3>閱讀原始文章</h3>
+    <p>透過閱讀原始文章，測試自己是否記得目標單字。<br>若仍有不記得意思的目標單字，可以點選該單字查看例句，透過例句回想意思，加深印象。</p>
+    <hr><br>
+    <div class="button-container-left">
+      <button id="startReadingButton" class="dominantButton" onclick="startReading()">開始閱讀</button>
+    </div>
+    <br>
+    <div id="textHolder" style="width: 100%"></div>
+    <div id="popup" class="popup"></div>
+    <div class="button-container-right" style="padding: 10px;">
+      <button id="tab3to4Button" class="regularButton" style="display: none;">下一步</button>
+    </div>
+  </div>
+  <!-- Step4 -->
+  <div id="Tab4" class="tabcontent">
+    <h3>拼字練習</h3>
+    <p>透過從例句產生的填空題，練習拼字，並強化目標單字與使用情境的關聯。</p>
+    <hr>
+    <div>
+      <button id="TWrange" class="regularButton" onclick="createTable()">自訂練習範圍</button>
+
+      <div class="hiddenDiv" id="TWtableButtonContainer" style="margin-bottom: 10px;">
+        <button class="regularButton" onclick="selectAllCheckboxes(true)">全選</button>
+        <button class="regularButton" onclick="selectAllCheckboxes(false)">取消全選</button>
+        <button id="applyTWRangeButton" class="regularButton" onclick="applyChanges()"
+          style="background-color: green; color: white;">確認選取</button>
+        <button class="regularButton" onclick="cancelChanges()"
+          style="background-color: red; color: white;">取消變更</button>
+      </div>
+      <div id="TWtableContainer"></div>
+    </div>
+    <div id="blankOptionsContainer" class="grid-container">
+      <div class="grid-item" style="grid-column: 1 ; grid-row: 1;">
+        <input type="checkbox" id="replaceMiddlePartCheckbox" />
+        <label for="replaceMiddlePartCheckbox">單字提示</label>
+
+      </div>
+      <div class="grid-item" style="grid-column: 2 ; grid-row: 1;">
+        <label for="blankNum">練習回次:</label>
+        <select id="blankNum" name="blankNum" style="font-size: large;"></select>
+      </div>
+      <div class="grid-item" style="grid-column: 3 ; grid-row: 1;">
+        <button id="startPractice" class="dominantButton" onclick="makeBlank()">開始練習</button>
+      </div>
+    </div>
+    <div id="blankContainer"></div>
+    <div style="text-align: center;">
+      <button id="checkAnswer" class="regularButton" style="display: none;" onclick="checkAnswer()">批改</button>
+      <button id="reTryButton" class="regularButton" style="display: none;" onclick="retryPractice()">重做錯誤題目</button>
+      <button id="nextRound" class="regularButton" style="display: none;" onclick="nextRound()">下一回</button>
+    </div>
+  </div>
+
+
+  <!-- Step5 -->
+  <div id="Tab5" class="tabcontent">
+    <h3>造句練習</h3>
+    <p>透過造句練習進行綜合性的訓練</p>
+    <hr>
+    <p>這座城市正在發展中，有新的建築和道路被興建。</p>
+    <input name="fileName" style="width:100%"></input>
+    <button>批改</button>
+  </div>
+
+  <script type="text/javascript" src="script.js"></script>
+</body>
+
+<!-- Step6 -->
+<div id="Tab6" class="tabcontent">
+  <h3>儲存學習集</h3>
+  <p>將本次的例句、定義、中文翻譯儲存到您的裝置，以便日後進行複習。</p>
+  <hr>
+  <div class="grid-container">
+    <div class="grid-item" style="grid-column: 1; grid-row: 1; text-align: left;">
+      <label for="fileName" style="font-weight: bold; font-size: x-large;">學習集名稱:</label><br>
+      <input name="fileName" id="fileName" style="width:100%; font-size: x-large;"></input>
+    </div>
+
+    <div class="grid-item" style="grid-column: 2; grid-row: 1; text-align: right;">
+      <button id="saveStudySet" class="regularButton" style="display: inline-block; margin: 10px; width:100%;"
+        onclick="saveStudySetToLocalStorage()">儲存至瀏覽器</button>
+      <br><button id="saveStudySet" class="dominantButton" style="display: inline-block; margin: 10px; width:100%;"
+        onclick="saveStudySetToDevice()">儲存至裝置</button>
+      <br><button id="saveStudySet" class="regularButton" style="display: inline-block; margin: 10px; width:100%;"
+        onclick="printStudySet()">列印成文件</button>
+    </div>
+  </div>
+</div>
+
+<!-- localStorage Manager -->
+<div id="Tab7" class="tabcontent">
+  <h1>學習集管理員</h1>
+
+  <h2>瀏覽器內的學習集</h2>
+  <table id="fileTable">
+    <tr>
+      <th>選取</th>
+      <th>學習集名稱</th>
+    </tr>
+  </table>
+
+  <button class="regularButton" onclick="deleteSelectedFiles()">刪除選取的學習集</button>
+</div>
+</div>
+
+</html>
